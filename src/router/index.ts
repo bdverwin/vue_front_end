@@ -4,6 +4,7 @@ import LoginPage from '../views/LoginPage.vue';
 import RegisterPage from '../views/RegisterPage.vue';
 import Dashboard from '../views/Dashboard.vue';
 import { useAuthStore } from '../stores/auth';
+import ProductList from '../views/ProductList.vue';
 
 const routes = [
     {
@@ -28,6 +29,12 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: RegisterPage,
+        meta: { requiresAuth: true }, // 🔒 Protect this route
+    },
+    { 
+        path: '/product',
+        name: 'Product',
+        component: ProductList,
         meta: { requiresAuth: true }, // 🔒 Protect this route
     },
     { 

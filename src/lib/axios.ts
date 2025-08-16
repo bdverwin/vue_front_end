@@ -4,10 +4,6 @@ export const api = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
 });
 
-// export const productApi = axios.create({
-//     baseURL: 'http://localhost:8000/api/v1/product',
-// });
-
 const authHeader = (api) => {
     api.interceptors.request.use(config => {
         const token = localStorage.getItem('auth_token');

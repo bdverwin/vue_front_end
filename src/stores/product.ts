@@ -11,12 +11,20 @@ export const useProductStore = defineStore('product', {
         async getProducts(){
             try {
                 const res = await api.get('/product/all');
-                console.log(res.data);
-                this.products = res.data;
+                this.products = res.data.data;
             } catch (err) {
                 console.log(err);
             }
-            console.log('test');
+        },
+
+        async searchProducts(request: string){
+            try {
+                const res = await api.get('/product/search', { params: {keyword : request} });
+                this.products = res.data.data;
+                console.log(this.products);
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 })

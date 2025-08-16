@@ -2,13 +2,13 @@
 import { useAuthStore } from '../stores/auth';
 import { useRouter } from 'vue-router';
 
-const auth = useAuthStore();
-const router = useRouter();
+// const auth = useAuthStore();
+// const router = useRouter();
 
-const handleLogout = async () => {
-    await auth.logout();
-    router.push('/login');
-};
+// const handleLogout = async () => {
+//     await auth.logout();
+//     router.push('/login');
+// };
 </script>
 <template>
     <div class="flex min-h-screen bg-gray-100">

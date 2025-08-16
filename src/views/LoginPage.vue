@@ -65,7 +65,7 @@
 
         <button
             type="submit"
-            class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            class="w-full bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
         >
             Login
         </button>
@@ -73,7 +73,7 @@
 
         <p class="text-center text-gray-600 mt-4">
         Don’t have an account?
-        <router-link to="/register" class="text-blue-500 hover:underline">Register</router-link>
+        <router-link to="/register" class="text-blue-500 hover:underline text-gray-800">Register</router-link>
         </p>
     </div>
     </div>

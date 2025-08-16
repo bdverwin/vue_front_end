@@ -10,6 +10,6 @@ const auth = useAuthStore();
             <router-link to="/">Login</router-link> |
             <router-link to="/register">Register</router-link>
         </nav> -->
-        <Header v-if="auth.user"/>
+        <Header v-if="auth.user" />
         <router-view />
 </template>

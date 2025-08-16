@@ -204,16 +204,11 @@ const handleUpdate = async () => {
     
             <button
                 type="submit"
-                class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition block"
+                class="w-full bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition block"
             >
                 {{ !hasUser ? 'Register' : 'Update' }}
             </button>
             </form>
-    
-            <p class="text-center text-gray-600 mt-4" v-if="!hasUser">
-            Already have an account?
-            <router-link to="/" class="text-blue-500 hover:underline">Login</router-link>
-            </p>
 
             <div class="flex p-2">
                 <router-link 

@@ -4,8 +4,9 @@ import LoginPage from '../views/LoginPage.vue';
 import RegisterPage from '../views/RegisterPage.vue';
 import Dashboard from '../views/Dashboard.vue';
 import { useAuthStore } from '../stores/auth';
-import ProductList from '../views/ProductList.vue';
+// import ProductList from '../views/ProductList.vue';
 import Home from '../views/Home.vue';
+import ProductPage from '../views/ProductPage.vue';
 
 const routes = [
     {
@@ -32,21 +33,27 @@ const routes = [
         component: RegisterPage,
         meta: { requiresAuth: true }, // 🔒 Protect this route
     },
-    { 
-        path: '/product',
-        name: 'Product',
-        component: ProductList,
-        meta: { requiresAuth: true }, // 🔒 Protect this route
-    },
+    // { 
+    //     path: '/product',
+    //     name: 'Product',
+    //     component: ProductList,
+    //     meta: { requiresAuth: true }, // 🔒 Protect this route
+    // },
     {
         path: '/home',
         name: 'Home',
         component: Home,
         meta: { requiresAuth: true }, // 🔒 Protect this route
     },
+    {
+        path: '/product/:id',
+        name: 'Product',
+        component: ProductPage,
+        meta: { requiresAuth: true }, // 🔒 Protect this route
+    },
     { 
         path: '/',
-        redirect: '/dashboard'
+        redirect: '/home'
     },
 ];
 
@@ -66,6 +73,9 @@ router.beforeEach(async (to, _, next) => {
     if (to.meta.requiresAuth && !auth.user) {
       return next('/login'); // Redirect to login if not authenticated
     } else if(to.meta.guestOnly && auth.isAuthenticated){
+        if(!auth.user.is_admin){
+            return next('/home');
+        }
         return next('/dashboard');
     }else{
         next();

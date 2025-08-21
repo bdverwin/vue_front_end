@@ -14,7 +14,7 @@
         const resp = await auth.login({ email: email.value, password: password.value });
         console.log(resp);
         if(resp.status == 200){
-            router.push('/dashboard');
+            auth.user.is_admin ? router.push('/dashboard') : router.push('/home');
         }else if(resp.status == 422){
             errors.value = resp.response.data;
         }

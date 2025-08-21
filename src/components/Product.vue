@@ -1,16 +1,23 @@
 <script setup>
 import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 
 defineProps({
     product: ({
         type: Object,
         required: true,
     })
-})
+});
+
+const router = useRouter();
+
+const handleProduct = (productId) => {
+    router.push({name: 'Product', params: {id : productId}})
+}
 </script>
 
 <template>
-    <div class="bg-white rounded shadow hover:shadow-lg transition overflow-hidden">
+    <div class="bg-white rounded shadow hover:shadow-lg transition overflow-hidden product" @click="handleProduct(product.id)">
         <!-- Product Image -->
         <div class="h-40 bg-gray-200 flex items-center justify-center">
             <img 
@@ -49,3 +56,10 @@ defineProps({
         </div>
     </div>
 </template>
+
+
+<style>
+div.product{
+    cursor:pointer;
+}
+</style>

@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import {api} from '../lib/axios';
+import { useAuthStore } from "./auth";
 
 
 export const useProductStore = defineStore('product', {
     state: () => ({
         products: [],
-        productSelected: {}
+        productSelected: {},
+        cart : {},
     }),
 
     actions:{
@@ -13,6 +15,7 @@ export const useProductStore = defineStore('product', {
             try {
                 const res = await api.get('/product/all');
                 this.products = res.data.data;
+                await this.getCart(useAuthStore().user.id);
             } catch (err) {
                 console.log(err);
             }
@@ -35,6 +38,33 @@ export const useProductStore = defineStore('product', {
             } catch (err) {
                 console.log(err);
             }
-        }
+        },
+
+        async getCart(userId: number){
+            try{
+                const res = await api.get(`/product/cart/${userId}`);
+                this.cart = res.data.data;
+            } catch (err) {
+                console.log(err);
+            }
+        },
+
+        async addToCart(qty: number, userId: number){
+            const req = {
+                "user_id" : userId,
+                "product_id" : this.productSelected.id,
+                "quantity" : qty,
+                "price" : parseFloat(this.productSelected.price),
+                "subtotal" : this.productSelected.price * qty,
+            };
+            try{
+                const res = await api.post(`/product/cart/add`, req);
+                this.getCart(userId);
+                return res.status;
+            } catch (err) {
+                console.log(err);
+                return err.status;
+            }
+        },
     }
 })

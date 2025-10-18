@@ -8,6 +8,7 @@ export const useProductStore = defineStore('product', {
         products: [],
         productSelected: {},
         cart : {},
+        total: 0,
     }),
 
     actions:{
@@ -44,6 +45,12 @@ export const useProductStore = defineStore('product', {
             try{
                 const res = await api.get(`/product/cart/${userId}`);
                 this.cart = res.data.data;
+                // this.total = 0;
+                // this.cart.forEach(element => {
+                //     this.total += parseFloat(element.subtotal);
+                // });
+                // console.log(this.total);
+                console.log(this.cart);
             } catch (err) {
                 console.log(err);
             }
@@ -60,6 +67,31 @@ export const useProductStore = defineStore('product', {
             try{
                 const res = await api.post(`/product/cart/add`, req);
                 this.getCart(userId);
+                return res.status;
+            } catch (err) {
+                console.log(err);
+                return err.status;
+            }
+        },
+
+        modifyTotal(price, action){
+            if(action == 1){
+                this.total+= price;
+            }else{
+                this.total-= price;
+            }
+        },
+
+        async updateCart(id: number, value: number, newQty: number){
+            const req = {
+                'id' : id,
+                'subtotal' : value,
+                'quantity' : newQty
+            }
+            try{
+                const res = await api.post(`/product/cart/update`, req);
+                console.log(useAuthStore().user.id);
+                // await this.getCart(useAuthStore().user.id);
                 return res.status;
             } catch (err) {
                 console.log(err);

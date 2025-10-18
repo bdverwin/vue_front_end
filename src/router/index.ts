@@ -7,6 +7,7 @@ import { useAuthStore } from '../stores/auth';
 // import ProductList from '../views/ProductList.vue';
 import Home from '../views/Home.vue';
 import ProductPage from '../views/ProductPage.vue';
+import CartPage from '../views/CartPage.vue';
 
 const routes = [
     {
@@ -33,12 +34,12 @@ const routes = [
         component: RegisterPage,
         meta: { requiresAuth: true }, // 🔒 Protect this route
     },
-    // { 
-    //     path: '/product',
-    //     name: 'Product',
-    //     component: ProductList,
-    //     meta: { requiresAuth: true }, // 🔒 Protect this route
-    // },
+    { 
+        path: '/cart',
+        name: 'Cart',
+        component: CartPage,
+        meta: { requiresAuth: true }, // 🔒 Protect this route
+    },
     {
         path: '/home',
         name: 'Home',

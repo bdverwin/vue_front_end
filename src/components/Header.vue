@@ -42,6 +42,10 @@ const handleClickOutside = () => {
   userOption.value = false;
 };
 
+const handleCart = () => {
+    router.push('/cart')
+}
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });

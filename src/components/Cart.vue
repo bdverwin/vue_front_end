@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, watch} from 'vue';
 import { useProductStore } from '../stores/product';
 
 const props = defineProps({
@@ -15,6 +15,19 @@ const props = defineProps({
 
 const prodStore = useProductStore();
 const quantity = ref(props.prod.quantity);
+const isChecked = ref(false);
+
+watch(isChecked, (val) => {
+    if(val){
+        console.log("checked");
+        prodStore.modifyTotal(parseFloat(props.prod.subtotal), 1, props.prod);
+        console.log(prodStore.total);
+    }else{
+        console.log("unchecked");
+        prodStore.modifyTotal(parseFloat(props.prod.subtotal), 0, props.prod);
+        console.log(prodStore.total);
+    }
+})
 
 function debounce(fn, delay) {
     let timer;
@@ -31,7 +44,8 @@ function updateCartQuantity(newQty) {
     if (toMerge === props.prod.subtotal) {
         return;
     }
-    prodStore.updateCart(props.prod.id, toMerge, newQty);
+    console.log(isChecked.value);
+    prodStore.updateCart(props.prod.id, toMerge, newQty, isChecked.value);
     props.refresh();
     
 }
@@ -48,7 +62,7 @@ const handleQtyChange = (e) => {
     <div class="bg-white rounded shadow hover:shadow-lg transition overflow-hidden p-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center max-h-[590px] mt-3">
         <!-- Left Section (Image + Name) -->
         <div class="flex items-center gap-3">
-            <input type="checkbox" class="h-4 w-4" />
+            <input type="checkbox" class="h-4 w-4" v-model="isChecked" />
 
             <div class="w-20 h-20 flex items-center justify-center border rounded-xl overflow-hidden bg-gray-100">
                 <img 
@@ -91,8 +105,9 @@ const handleQtyChange = (e) => {
             <div>
                 <button 
                     class="px-3 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+                    @click="handleRemove"
                 >
-                    Delete
+                    Remove
                 </button>
             </div>
         </div>

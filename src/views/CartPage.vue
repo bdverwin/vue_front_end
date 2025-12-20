@@ -28,7 +28,15 @@ onMounted(()=>{
             </div>
             <div class="total-class-container">
                 <div class="total-class bg-white w-[1215px] m-w-[1250px] rounded shadow hover:shadow-lg transition overflow-hidden p-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center max-h-[590px] mt-3">
-                    test
+                    <div>({{ Object.keys(productStore.selected).length }}) Selected</div>
+                    <div class="flex justify-end items-center">
+                        Total ({{ Object.keys(productStore.selected).length }} item): ₱{{ productStore.total }}
+                        <button 
+                        class="bg-gray-800 text-white py-2 px-7 mx-3 rounded-xl font-medium hover:bg-gray-700 transition"
+                        >
+                        Checkout
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

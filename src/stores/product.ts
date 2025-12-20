@@ -9,6 +9,7 @@ export const useProductStore = defineStore('product', {
         productSelected: {},
         cart : {},
         total: 0,
+        selected: {}
     }),
 
     actions:{
@@ -74,29 +75,60 @@ export const useProductStore = defineStore('product', {
             }
         },
 
-        modifyTotal(price, action){
-            if(action == 1){
-                this.total+= price;
-            }else{
-                this.total-= price;
+        modifyTotal(price, action, item) {
+            if (action === 1) {
+                // Add / update item
+                if (this.selected.hasOwnProperty(item.id)) {
+                    const oldSubtotal = this.selected[item.id].subtotal;
+                    const newSubtotal = item.subtotal;
+
+                    if (oldSubtotal !== newSubtotal) {
+                        const diff = newSubtotal - oldSubtotal;
+                        this.total = Math.round((this.total + diff) * 100) / 100;
+                    }
+
+                    this.selected[item.id].subtotal = newSubtotal;
+                } else {
+                    this.total = Math.round((this.total + price) * 100) / 100;
+                    this.selected[item.id] = item;
+                }
+            } else {
+                // Remove item
+                this.total = Math.round((this.total - price) * 100) / 100;
+
+                // Delete item from selected
+                if (this.selected.hasOwnProperty(item.id)) {
+                    delete this.selected[item.id];
+                    console.log(this.selected);
+                }
             }
         },
 
-        async updateCart(id: number, value: number, newQty: number){
+        async updateCart(id: number, value: number, newQty: number, checked: boolean){
             const req = {
                 'id' : id,
                 'subtotal' : value,
                 'quantity' : newQty
             }
             try{
+                if(checked){
+                    this.modifyTotal(newQty, 1, req);
+                }
                 const res = await api.post(`/product/cart/update`, req);
-                console.log(useAuthStore().user.id);
-                // await this.getCart(useAuthStore().user.id);
                 return res.status;
             } catch (err) {
                 console.log(err);
                 return err.status;
             }
         },
+
+        async removeCart(id: number){
+            try {
+                const res = await api.delete(`/product/cart/delete/${id}`);
+                console.log();
+            } catch (error) {
+                console.log();
+            }
+        },
     }
-})
+});
